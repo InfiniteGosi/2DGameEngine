@@ -4,41 +4,69 @@
 #include "../Components/SpriteComponent.h"
 #include "../AssetStore/AssetStore.h"
 #include <SDL.h>
+#include <vector>
+#include <algorithm>
 
 class RenderSystem : public System {
 public:
-	RenderSystem() {
-		RequireComponent<TransformComponent>();
-		RequireComponent<SpriteComponent>();
-	}
+    RenderSystem() {
+        RequireComponent<TransformComponent>();
+        RequireComponent<SpriteComponent>();
+    }
 
-	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetStore>& assetStore) {
-		// Loop all the entities that the system is interested in
-		for (auto entity : GetSystemEntities()) {
-			// Update entity position based on its velocity
-			const auto transform = entity.GetComponent<TransformComponent>();
-			const auto sprite = entity.GetComponent<SpriteComponent>();
+    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetStore>& assetStore) {
+        // Create a helper struct
+        struct RenderableEntity {
+            TransformComponent transformComponent;
+            SpriteComponent spriteComponent;
 
-			// Set the source rectangle of our original sprite texture
-			SDL_Rect srcRect = sprite.srcRect;
+            bool operator <(const RenderableEntity& other) {
+                return spriteComponent.zIndex < other.spriteComponent.zIndex;
+            }
+        };
 
-			// Set the destination rectangle with the x,y position to be rendered
-			SDL_Rect dstRect = {
-				static_cast<int>(transform.position.x),
-				static_cast<int>(transform.position.y),
-				static_cast<int>(sprite.width * transform.scale.x),
-				static_cast<int>(sprite.height * transform.scale.y),
-			};
+        std::vector<RenderableEntity> renderableEntities;
 
-			SDL_RenderCopyEx(
-				renderer,
-				assetStore->GetTexture(sprite.assetId),
-				&srcRect,
-				&dstRect,
-				transform.rotation,
-				NULL,
-				SDL_FLIP_NONE
-			);
-		}
-	}
+        for (auto entity : GetSystemEntities()) {
+            RenderableEntity renderableEntity;
+            renderableEntity.transformComponent = entity.GetComponent<TransformComponent>();
+            renderableEntity.spriteComponent = entity.GetComponent<SpriteComponent>();
+
+            renderableEntities.emplace_back(renderableEntity);
+        }
+        
+        // Sort all the entities by the z-index
+        /*sort(renderableEntities.begin(), renderableEntities.end(), [](const RenderableEntity& a, const RenderableEntity& b) {
+            return a.spriteComponent.zIndex < b.spriteComponent.zIndex;
+        });*/
+        sort(renderableEntities.begin(), renderableEntities.end());
+
+        // Loop all entities that the system is interested in
+        for (auto entity : renderableEntities) {
+            const auto transform = entity.transformComponent;
+            const auto sprite = entity.spriteComponent;
+
+            // Set the source rectangle of our original sprite texture
+            SDL_Rect srcRect = sprite.srcRect;
+
+            // Set the destination rectangle with the x,y position to be rendered
+            SDL_Rect dstRect = {
+                static_cast<int>(transform.position.x),
+                static_cast<int>(transform.position.y),
+                static_cast<int>(sprite.width * transform.scale.x),
+                static_cast<int>(sprite.height * transform.scale.y)
+            };
+
+            // Draw the texture on the destination renderer
+            SDL_RenderCopyEx(
+                renderer,
+                assetStore->GetTexture(sprite.assetId),
+                &srcRect,
+                &dstRect,
+                transform.rotation,
+                NULL,
+                SDL_FLIP_NONE
+            );
+        }
+    }
 };

@@ -3,32 +3,32 @@
 #include <SDL_image.h>
 
 AssetStore::AssetStore() {
-	Logger::Log("Asset store created!");
+    Logger::Log("AssetStore constructor called!");
 }
 
 AssetStore::~AssetStore() {
-	ClearAssets();
-	Logger::Log("Asset store destroyed!");
+    ClearAssets();
+    Logger::Log("AssetStore destructor called!");
 }
 
 void AssetStore::ClearAssets() {
-	for (auto texture : textures) {
-		SDL_DestroyTexture(texture.second);
-	}
-	textures.clear();
+    for (auto texture : textures) {
+        SDL_DestroyTexture(texture.second);
+    }
+    textures.clear();
 }
 
 void AssetStore::AddTexture(SDL_Renderer* renderer, const std::string& assetId, const std::string& filePath) {
-	SDL_Surface* surface = IMG_Load(filePath.c_str());
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_FreeSurface(surface);
+    SDL_Surface* surface = IMG_Load(filePath.c_str());
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
 
-	// Add texture to the map
-	textures.emplace(assetId, texture);
+    // Add the texture to the map
+    textures.emplace(assetId, texture);
 
-	Logger::Log("New texture added to the asset store with id = " + assetId);
+    Logger::Log("Texture added to the AssetStore with id " + assetId);
 }
 
 SDL_Texture* AssetStore::GetTexture(const std::string& assetId) {
-	return textures[assetId];
+    return textures[assetId];
 }
