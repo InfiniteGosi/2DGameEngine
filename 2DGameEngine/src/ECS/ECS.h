@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <deque>
 
 const unsigned int MAX_COMPONENTS = 32;
 
@@ -40,6 +41,7 @@ private:
 public:
     Entity(int id) : id(id) {};
     Entity(const Entity& entity) = default;
+    void Kill();
     int GetId() const;
 
     Entity& operator =(const Entity& other) = default;
@@ -162,6 +164,9 @@ private:
     std::set<Entity> entitiesToBeAdded;
     std::set<Entity> entitiesToBeKilled;
 
+    // List of free entity ids that were previously removed
+    std::deque<int> freeIds;
+
 public:
     Registry() {
         Logger::Log("Registry constructor called");
@@ -177,6 +182,9 @@ public:
     // Entity management
     Entity CreateEntity();
 
+    // Kill entity
+    void KillEntity(Entity entity);
+
     // Component management
     template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);
     template <typename TComponent> void RemoveComponent(Entity entity);
@@ -189,9 +197,9 @@ public:
     template <typename TSystem> bool HasSystem() const;
     template <typename TSystem> TSystem& GetSystem() const;
 
-    // Checks the component signature of an entity and add the entity to the systems
-    // that are interested in it
+    // Add and remove entity from their systems
     void AddEntityToSystems(Entity entity);
+    void RemoveEntityFromSystems(Entity entity);
 };
 
 template <typename TComponent>
