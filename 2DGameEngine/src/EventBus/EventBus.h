@@ -55,6 +55,11 @@ public:
 		Logger::Log("Event buss destroyed!");
 	}
 
+	// Clear the subscribers list
+	void Reset() {
+		subscribers.clear();
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// Subscribe to an event type <T>
 	// In our implementation, a listener subscribes to an event
