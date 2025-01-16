@@ -45,9 +45,9 @@ public:
 		if (!projectileComponent.isFriendly) {
 			// Reduce the health of the player by the projectile hitPercentDamage
 			auto& health = player.GetComponent<HealthComponent>();
-			health.healPercentage -= projectileComponent.hitPercentDamage;
+			health.healthPercentage -= projectileComponent.hitPercentDamage;
 
-			if (health.healPercentage <= 0) {
+			if (health.healthPercentage <= 0) {
 				player.Kill();
 			}
 
@@ -61,9 +61,9 @@ public:
 		
 		if (projectileComponent.isFriendly) {
 			auto& health = enemy.GetComponent<HealthComponent>();
-			health.healPercentage -= projectileComponent.hitPercentDamage;
+			health.healthPercentage -= projectileComponent.hitPercentDamage;
 
-			if (health.healPercentage <= 0) {
+			if (health.healthPercentage <= 0) {
 				enemy.Kill();
 			}
 
