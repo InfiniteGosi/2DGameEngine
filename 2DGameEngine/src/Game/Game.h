@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <sol/sol.hpp>
 #include "../ECS/ECS.h"
 #include "../AssetStore/AssetStore.h"
 #include "../EventBus/EventBus.h"
@@ -16,6 +17,7 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Rect camera;
 
+	sol::state lua;
 	std::unique_ptr<Registry> registry;
 	std::unique_ptr<AssetStore> assetStore;
 	std::unique_ptr<EventBus> eventBus;
@@ -30,7 +32,6 @@ public:
 	~Game();
 	void Initialize();
 	void Run();
-	void LoadLevel(int level);
 	void Setup();
 	void ProcessInput();
 	void Update();
