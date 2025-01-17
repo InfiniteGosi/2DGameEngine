@@ -28,8 +28,8 @@ public:
 					continue;
 				}
 
-				auto bTransform = b.GetComponent<TransformComponent>();
-				auto bCollider = b.GetComponent<BoxColliderComponent>();
+				auto& bTransform = b.GetComponent<TransformComponent>();
+				auto& bCollider = b.GetComponent<BoxColliderComponent>();
 
 				bool collisionHappened = CheckAABBCollision(
 					aTransform.position.x + aCollider.offset.x,

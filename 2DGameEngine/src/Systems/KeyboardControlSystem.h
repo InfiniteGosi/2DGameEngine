@@ -20,7 +20,7 @@ public:
 
     void OnKeyPressed(KeyPressedEvent& event) {
         for (auto entity : GetSystemEntities()) {
-            const auto keyboardControl = entity.GetComponent<KeyboardControlledComponent>();
+            const auto& keyboardControl = entity.GetComponent<KeyboardControlledComponent>();
             auto& sprite = entity.GetComponent<SpriteComponent>();
             auto& rigidBody = entity.GetComponent<RigidBodyComponent>();
 

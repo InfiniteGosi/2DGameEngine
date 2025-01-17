@@ -11,9 +11,9 @@ public:
 	}
 
 	void Update(SDL_Renderer* renderer, SDL_Rect& camera) {
-		for (auto entity : GetSystemEntities()) {
-			auto transform = entity.GetComponent<TransformComponent>();
-			auto collider = entity.GetComponent<BoxColliderComponent>();
+		for (auto& entity : GetSystemEntities()) {
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& collider = entity.GetComponent<BoxColliderComponent>();
 
 			SDL_Rect colliderRect = {
 				static_cast<int>(transform.position.x + collider.offset.x - camera.x),

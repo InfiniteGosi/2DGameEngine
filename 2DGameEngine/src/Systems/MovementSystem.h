@@ -55,7 +55,7 @@ public:
 			auto& transform = entity.GetComponent<TransformComponent>();
 			const auto rigidbody = entity.GetComponent<RigidBodyComponent>();
 
-			// Updat the entity position based on its velocity
+			// Update the entity position based on its velocity
 			transform.position.x += rigidbody.velocity.x * deltaTime;
 			transform.position.y += rigidbody.velocity.y * deltaTime;
 

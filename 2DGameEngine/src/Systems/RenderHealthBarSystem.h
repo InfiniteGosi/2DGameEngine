@@ -16,9 +16,9 @@ public:
 
     void Update(SDL_Renderer* renderer, const std::unique_ptr<AssetStore>& assetStore, const SDL_Rect& camera) {
         for (auto entity : GetSystemEntities()) {
-            const auto transform = entity.GetComponent<TransformComponent>();
-            const auto sprite = entity.GetComponent<SpriteComponent>();
-            const auto health = entity.GetComponent<HealthComponent>();
+            const auto& transform = entity.GetComponent<TransformComponent>();
+            const auto& sprite = entity.GetComponent<SpriteComponent>();
+            const auto& health = entity.GetComponent<HealthComponent>();
 
             // Draw a the health bar with the correct color for the percentage
             SDL_Color healthBarColor = { 255, 255, 255 };
