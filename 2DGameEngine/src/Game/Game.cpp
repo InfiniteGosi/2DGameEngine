@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <glm/glm.hpp>
 #include "./LevelLoader.h"
 #include "../Logger/Logger.h"
@@ -19,6 +20,7 @@
 #include "../Systems/RenderHealthBarSystem.h"
 #include "../Systems/RenderGUISystem.h"
 #include "../Systems/ScriptSystem.h"
+#include "../Systems/PlayAudioSystem.h"
 #include <imgui/imgui.h>
 #include <imgui/imgui_sdl.h>
 #include <imgui/imgui_impl_sdl.h>
@@ -50,6 +52,12 @@ void Game::Initialize() {
         Logger::Err("Error initializing SDL TTF.");
         return;
     }
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        Logger::Err("Error initializing SDL Mixer.");
+        return;
+    }
+
     SDL_DisplayMode displayMode;
     SDL_GetCurrentDisplayMode(0, &displayMode);
     windowWidth = displayMode.w;
@@ -129,6 +137,7 @@ void Game::Setup() {
     registry->AddSystem<RenderHealthBarSystem>();
     registry->AddSystem<RenderGUISystem>();
     registry->AddSystem<ScriptSystem>();
+    registry->AddSystem<PlayAudioSystem>();
 
     // Create the bidings between C++ and Lua
     registry->GetSystem<ScriptSystem>().CreateLuaBindings(lua);
@@ -172,6 +181,7 @@ void Game::Update() {
     registry->GetSystem<CameraMovementSystem>().Update(camera);
     registry->GetSystem<ProjectileLifecycleSystem>().Update();
     registry->GetSystem<ScriptSystem>().Update(deltaTime, SDL_GetTicks());
+    registry->GetSystem<PlayAudioSystem>().Update(assetStore);
 }
 
 void Game::Render() {
@@ -204,5 +214,6 @@ void Game::Destroy() {
     ImGui::DestroyContext();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    Mix_CloseAudio();
     SDL_Quit();
 }

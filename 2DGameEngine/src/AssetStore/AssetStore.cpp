@@ -21,6 +21,11 @@ void AssetStore::ClearAssets() {
         TTF_CloseFont(font.second);
     }
     fonts.clear();
+
+    for (auto audio : audios) {
+        Mix_FreeMusic(audio.second);
+    }
+    audios.clear();
 }
 
 void AssetStore::AddTexture(SDL_Renderer* renderer, const std::string& assetId, const std::string& filePath) {
@@ -44,4 +49,12 @@ void AssetStore::AddFont(const std::string& assetId, const std::string& filePath
 
 TTF_Font* AssetStore::GetFont(const std::string& assetId) {
     return fonts[assetId];
+}
+
+void AssetStore::AddAudio(const std::string& assetId, const std::string& filePath) {
+    audios.emplace(assetId, Mix_LoadMUS(filePath.c_str()));
+}
+
+Mix_Music* AssetStore::GetAudio(const std::string& assetId) {
+    return audios[assetId];
 }

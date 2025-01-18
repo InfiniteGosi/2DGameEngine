@@ -91,7 +91,8 @@ Level = {
         { type = "texture", id = "bullet-texture",              file = "./assets/images/bullet.png" },
         { type = "texture", id = "radar-texture",               file = "./assets/images/radar-spritesheet.png" },
         { type = "font"   , id = "pico8-font-5",                file = "./assets/fonts/pico8.ttf", font_size = 5 },
-        { type = "font"   , id = "pico8-font-10",               file = "./assets/fonts/pico8.ttf", font_size = 10 }
+        { type = "font"   , id = "pico8-font-10",               file = "./assets/fonts/pico8.ttf", font_size = 10 },
+        { type = "audio"  , id = "chopper-audio",               file = "./assets/sounds/helicopter.wav" }
     },
 
     ----------------------------------------------------
@@ -119,6 +120,9 @@ Level = {
                     position = { x = 242, y = 110 },
                     scale = { x = 1.0, y = 1.0 },
                     rotation = 0.0, -- degrees
+                },
+                audio = {
+                    audio_asset_id = "chopper-audio"
                 },
                 rigidbody = {
                     velocity = { x = 0.0, y = 0.0 }

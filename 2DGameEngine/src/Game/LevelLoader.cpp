@@ -14,6 +14,7 @@
 #include "../Components/TextLabelComponent.h"
 #include "../Components/HealthComponent.h"
 #include "../Components/ScriptComponent.h"
+#include "../Components/AudioComponent.h"
 
 LevelLoader::LevelLoader() {
     Logger::Log("LevelLoader constructor called!");
@@ -60,6 +61,10 @@ void LevelLoader::LoadLevel(sol::state& lua, const std::unique_ptr<Registry>& re
         if (assetType == "font") {
             assetStore->AddFont(assetId, asset["file"], asset["font_size"]);
             Logger::Log("A new font asset was added to the asset store, id: " + assetId);
+        }
+        if (assetType == "audio") {
+            assetStore->AddAudio(assetId, asset["file"]);
+            Logger::Log("A new audio asset was added to the asset store, id: " + assetId);
         }
         i++;
     }
@@ -149,6 +154,23 @@ void LevelLoader::LoadLevel(sol::state& lua, const std::unique_ptr<Registry>& re
                         entity["components"]["rigidbody"]["velocity"]["y"].get_or(0.0)
                     )
                 );
+            }
+
+            // Audio
+            sol::optional<sol::table> audio = entity["components"]["audio"];
+            if (audio != sol::nullopt) {
+                Logger::Log("Audio component found.");
+                std::string audioAssetId = audio.value().get_or<std::string>("audio_asset_id", "");
+                if (!audioAssetId.empty()) {
+                    Logger::Log("Audio Asset ID: " + audioAssetId);
+                    newEntity.AddComponent<AudioComponent>(audioAssetId);
+                }
+                else {
+                    Logger::Log("audio_asset_id is empty.");
+                }
+            }
+            else {
+                Logger::Log("Audio component not found for this entity.");
             }
 
             // Sprite

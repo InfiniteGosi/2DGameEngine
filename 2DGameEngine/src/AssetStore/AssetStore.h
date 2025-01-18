@@ -3,11 +3,13 @@
 #include <map>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 class AssetStore {
 private:
 	std::map<std::string, SDL_Texture*> textures;
 	std::map<std::string, TTF_Font*> fonts;
+	std::map<std::string, Mix_Music*> audios;
 
 public:
 	AssetStore();
@@ -19,4 +21,7 @@ public:
 
 	void AddFont(const std::string& assetId, const std::string& filePath, int fontSize);
 	TTF_Font* GetFont(const std::string& assetId);
+
+	void AddAudio(const std::string& assetId, const std::string& filePath);
+	Mix_Music* GetAudio(const std::string& assetId);
 };
