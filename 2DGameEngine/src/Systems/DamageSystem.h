@@ -3,9 +3,11 @@
 #include "../Components/BoxColliderComponent.h"
 #include "../Components/ProjectileComponent.h"
 #include "../Components/HealthComponent.h"
+#include "../Components/AudioComponent.h"
 #include "../EventBus/EventBus.h"
 #include "../Events/CollisionEvent.h"
 #include "../Logger/Logger.h"
+#include <SDL_mixer.h>
 
 class DamageSystem : public System {
 public:
@@ -48,6 +50,11 @@ public:
 			health.healthPercentage -= projectileComponent.hitPercentDamage;
 
 			if (health.healthPercentage <= 0) {
+				if (player.HasComponent<AudioComponent>()) {
+					const auto audio = player.GetComponent<AudioComponent>();
+					// Stop the audio immediately
+					Mix_HaltChannel(audio.channel);
+				}
 				player.Kill();
 			}
 
@@ -55,6 +62,7 @@ public:
 			projectile.Kill();
 		}
 	}
+
 
 	void OnProjectileHitsEnemy(Entity projectile, Entity enemy) {
 		const auto projectileComponent = projectile.GetComponent<ProjectileComponent>();

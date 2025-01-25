@@ -9,7 +9,7 @@ class AssetStore {
 private:
 	std::map<std::string, SDL_Texture*> textures;
 	std::map<std::string, TTF_Font*> fonts;
-	std::map<std::string, Mix_Music*> audios;
+	std::map<std::string, Mix_Chunk*> audios;
 
 public:
 	AssetStore();
@@ -23,5 +23,5 @@ public:
 	TTF_Font* GetFont(const std::string& assetId);
 
 	void AddAudio(const std::string& assetId, const std::string& filePath);
-	Mix_Music* GetAudio(const std::string& assetId);
+	Mix_Chunk* GetAudio(const std::string& assetId);
 };

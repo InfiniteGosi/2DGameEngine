@@ -3,8 +3,10 @@
 
 struct AudioComponent {
 	std::string assetId;
+	int channel;
 
-	AudioComponent(std::string assetId = "") {
+	AudioComponent(std::string assetId = "", int channel = -1) {
 		this->assetId = assetId;
+		this->channel = channel;
 	}
 };

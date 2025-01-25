@@ -163,7 +163,7 @@ void LevelLoader::LoadLevel(sol::state& lua, const std::unique_ptr<Registry>& re
                 std::string audioAssetId = audio.value().get_or<std::string>("audio_asset_id", "");
                 if (!audioAssetId.empty()) {
                     Logger::Log("Audio Asset ID: " + audioAssetId);
-                    newEntity.AddComponent<AudioComponent>(audioAssetId);
+                    newEntity.AddComponent<AudioComponent>(audioAssetId, entity["components"]["audio"]["channel"]);
                 }
                 else {
                     Logger::Log("audio_asset_id is empty.");

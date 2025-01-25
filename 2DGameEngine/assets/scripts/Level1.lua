@@ -122,7 +122,8 @@ Level = {
                     rotation = 0.0, -- degrees
                 },
                 audio = {
-                    audio_asset_id = "chopper-audio"
+                    audio_asset_id = "chopper-audio",
+                    channel = 1
                 },
                 rigidbody = {
                     velocity = { x = 0.0, y = 0.0 }

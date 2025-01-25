@@ -23,7 +23,7 @@ void AssetStore::ClearAssets() {
     fonts.clear();
 
     for (auto audio : audios) {
-        Mix_FreeMusic(audio.second);
+        Mix_FreeChunk(audio.second);
     }
     audios.clear();
 }
@@ -52,9 +52,9 @@ TTF_Font* AssetStore::GetFont(const std::string& assetId) {
 }
 
 void AssetStore::AddAudio(const std::string& assetId, const std::string& filePath) {
-    audios.emplace(assetId, Mix_LoadMUS(filePath.c_str()));
+    audios.emplace(assetId, Mix_LoadWAV(filePath.c_str()));
 }
 
-Mix_Music* AssetStore::GetAudio(const std::string& assetId) {
+Mix_Chunk* AssetStore::GetAudio(const std::string& assetId) {
     return audios[assetId];
 }

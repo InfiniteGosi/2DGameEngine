@@ -13,12 +13,11 @@ public:
 		for (auto& entity : GetSystemEntities()) {
 			auto audio = entity.GetComponent<AudioComponent>();
 
-			Mix_Music* music = assetStore->GetAudio(audio.assetId);
+			Mix_Chunk* music = assetStore->GetAudio(audio.assetId);
 
-			if (Mix_PlayingMusic() == 0)
-			{
-				if (Mix_PlayMusic(music, -1) == -1)
-				{
+			if (!Mix_Playing(audio.channel)) {
+				// Play the audio, using a free channel if needed
+				if (Mix_PlayChannel(audio.channel, music, 1) == -1) {
 					return;
 				}
 			}
