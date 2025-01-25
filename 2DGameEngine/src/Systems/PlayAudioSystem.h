@@ -11,7 +11,11 @@ public:
 
 	void Update(const std::unique_ptr<AssetStore>& assetStore) {
 		for (auto& entity : GetSystemEntities()) {
-			auto audio = entity.GetComponent<AudioComponent>();
+			auto& audio = entity.GetComponent<AudioComponent>();
+
+			if (audio.channel == Game::DEFAULT_CHANNEL) {
+				continue;
+			}
 
 			Mix_Chunk* music = assetStore->GetAudio(audio.assetId);
 

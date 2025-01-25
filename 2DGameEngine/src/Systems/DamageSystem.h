@@ -42,7 +42,7 @@ public:
 	}
 
 	void OnProjectileHitsPlayer(Entity projectile, Entity player) {
-		const auto projectileComponent = projectile.GetComponent<ProjectileComponent>();
+		const auto& projectileComponent = projectile.GetComponent<ProjectileComponent>();
 
 		if (!projectileComponent.isFriendly) {
 			// Reduce the health of the player by the projectile hitPercentDamage
@@ -51,9 +51,10 @@ public:
 
 			if (health.healthPercentage <= 0) {
 				if (player.HasComponent<AudioComponent>()) {
-					const auto audio = player.GetComponent<AudioComponent>();
+					auto& audio = player.GetComponent<AudioComponent>();
 					// Stop the audio immediately
 					Mix_HaltChannel(audio.channel);
+					audio.channel = Game::DEFAULT_CHANNEL;
 				}
 				player.Kill();
 			}
@@ -65,7 +66,7 @@ public:
 
 
 	void OnProjectileHitsEnemy(Entity projectile, Entity enemy) {
-		const auto projectileComponent = projectile.GetComponent<ProjectileComponent>();
+		const auto& projectileComponent = projectile.GetComponent<ProjectileComponent>();
 		
 		if (projectileComponent.isFriendly) {
 			auto& health = enemy.GetComponent<HealthComponent>();
@@ -77,9 +78,5 @@ public:
 
 			projectile.Kill();
 		}
-	}
-
-	void Update() {
-
 	}
 };

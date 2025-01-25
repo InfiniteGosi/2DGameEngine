@@ -29,6 +29,7 @@ int Game::windowWidth;
 int Game::windowHeight;
 int Game::mapWidth;
 int Game::mapHeight;
+const int Game::DEFAULT_CHANNEL;
 
 Game::Game() {
     isRunning = false;

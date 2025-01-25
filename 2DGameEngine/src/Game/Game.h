@@ -27,6 +27,7 @@ public:
 	static int windowHeight;
 	static int mapWidth;
 	static int mapHeight;
+	const static int DEFAULT_CHANNEL = -100;
 
 	Game();
 	~Game();
