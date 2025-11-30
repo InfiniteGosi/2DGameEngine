@@ -2,6 +2,8 @@
 
 A homebrew 2D game engine built with C++17 following the Pikuma C++ 2D Game Engine Development course.
 
+![Engine Demo](./resources/demo.gif)
+
 ## Overview
 
 This project is a custom 2D game engine implementation created as part of learning advanced C++ game development concepts. The engine demonstrates modern C++ practices and game architecture patterns.
